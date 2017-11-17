@@ -78,6 +78,7 @@ public class MainVerticle extends AbstractVerticle {
     routerFactory.addSecurityHandler("apikey", new ApikeySecurityHandler());
   }
   
+  @SuppressWarnings("unchecked")
   private void configHandlers(Future future, JsonObject config, OpenAPI3RouterFactory routerFactory) {
     config.getJsonArray("handlers").forEach(handler -> {
       JsonObject handJO = (JsonObject) handler;

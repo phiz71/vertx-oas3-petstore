@@ -3,7 +3,6 @@ package com.github.phiz71.vertx.oas3.petstore;
 import com.github.phiz71.vertx.oas3.petstore.model.Error;
 import com.github.phiz71.vertx.oas3.petstore.model.NewPet;
 import com.github.phiz71.vertx.oas3.petstore.model.Pet;
-import com.github.phiz71.vertx.oas3.petstore.util.BaseTest;
 import io.vertx.core.json.JsonObject;
 import org.junit.Assert;
 import org.junit.Test;

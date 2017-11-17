@@ -1,13 +1,8 @@
-package com.github.phiz71.vertx.oas3.petstore.util;
+package com.github.phiz71.vertx.oas3.petstore;
 
-import com.github.phiz71.vertx.oas3.petstore.MainVerticle;
 import com.github.phiz71.vertx.oas3.petstore.model.Error;
 import com.github.phiz71.vertx.oas3.petstore.model.Pet;
-import io.vertx.config.ConfigRetriever;
-import io.vertx.config.ConfigRetrieverOptions;
-import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.*;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.web.client.HttpResponse;
@@ -27,33 +22,22 @@ public abstract class BaseTest {
   public void before(TestContext context) {
     Async async = context.async();
     vertx = Vertx.vertx(new VertxOptions().setMaxEventLoopExecuteTime(Long.MAX_VALUE));
-    ConfigStoreOptions fileStore = new ConfigStoreOptions().setType("file").setConfig(new JsonObject().put("path", "my-config-test.json"));
-    ConfigRetriever retriever = ConfigRetriever.create(vertx, new ConfigRetrieverOptions().addStore(fileStore));
-    retriever.getConfig(ar -> {
-      if (ar.succeeded()) {
-        DeploymentOptions options = new DeploymentOptions();
-        options.setConfig(ar.result());
-        vertx.deployVerticle(new MainVerticle(), options, res -> {
-          if (res.succeeded()) {
-            apiClient = new ApiClient(vertx, "localhost", 8080);
-            async.complete();
-          } else {
-            context.fail(res.cause());
-          }
-        });
-        initTestMongoVerticleDb();
-      } else {
-        context.fail(ar.cause());
-      }
-    });
+      vertx.deployVerticle(new MainVerticle(), res -> {
+        if (res.succeeded()) {
+          apiClient = new ApiClient(vertx, "localhost", 8080);
+          async.complete();
+        } else {
+          context.fail(res.cause());
+        }
+      });
+      initPetStore();
   }
   
-  private void initTestMongoVerticleDb() {
-    TestMongoClientVerticle.initFakeDb(fakeMongoDbName);
-    TestMongoClientVerticle.db.get(fakeMongoDbName).add(petToFind);
-    TestMongoClientVerticle.db.get(fakeMongoDbName).add(anotherPetToFind);
-    TestMongoClientVerticle.db.get(fakeMongoDbName).add(yetAnotherPetToFind);
-    TestMongoClientVerticle.db.get(fakeMongoDbName).add(petToDelete);
+  private void initPetStore() {
+    PetStoreVerticle.petStoreList.add(petToFind);
+    PetStoreVerticle.petStoreList.add(anotherPetToFind);
+    PetStoreVerticle.petStoreList.add(yetAnotherPetToFind);
+    PetStoreVerticle.petStoreList.add(petToDelete);
   }
   
   protected Handler<AsyncResult<HttpResponse>> testDefaultError(TestContext test, Async async) {
@@ -72,6 +56,7 @@ public abstract class BaseTest {
   
   public void after(TestContext context) {
     apiClient.close();
+    PetStoreVerticle.petStoreList.clear();
     vertx.close(context.asyncAssertSuccess());
   }
   

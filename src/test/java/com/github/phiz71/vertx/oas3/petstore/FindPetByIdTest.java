@@ -2,7 +2,6 @@ package com.github.phiz71.vertx.oas3.petstore;
 
 import com.github.phiz71.vertx.oas3.petstore.model.Error;
 import com.github.phiz71.vertx.oas3.petstore.model.Pet;
-import com.github.phiz71.vertx.oas3.petstore.util.BaseTest;
 import io.vertx.core.AsyncResult;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;

@@ -22,7 +22,7 @@
   //others verticles to deploy
   "verticles": [
     {
-      "verticleFullName": "com.github.phiz71.vertx.oas3.petstore.MongoClientVerticle"
+      "verticleFullName": "com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle"
     }
   ]
 }

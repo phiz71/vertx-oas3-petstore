@@ -1,6 +1,5 @@
 package com.github.phiz71.vertx.oas3.petstore;
 
-import com.github.phiz71.vertx.oas3.petstore.util.BaseTest;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.unit.Async;

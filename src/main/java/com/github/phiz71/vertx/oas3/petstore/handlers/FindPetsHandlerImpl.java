@@ -1,6 +1,6 @@
 package com.github.phiz71.vertx.oas3.petstore.handlers;
 
-import com.github.phiz71.vertx.oas3.petstore.MongoClientVerticle;
+import com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle;
 import com.github.phiz71.vertx.oas3.petstore.model.Error;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -15,21 +15,19 @@ public class FindPetsHandlerImpl implements FindPetsHandler {
   @Override
   public void findPets(RoutingContext routingContext, List<RequestParameter> tags, Integer limit) {
     
-    JsonObject valueToFind = new JsonObject();
-    
-    if (tags != null) {
-      JsonArray orCondition = new JsonArray(tags.stream().map(tag -> new JsonObject().put("tag", tag.getString())).collect(Collectors.toList()));
-      valueToFind.put("$or", orCondition);
-    }
-    
     // Handle findPets
-    JsonObject mongoCommand = new JsonObject().put("key", "pets").put("value", valueToFind);
+    JsonObject command = new JsonObject();
     
     if (limit != null) {
-      mongoCommand.put(MongoClientVerticle.MONGO_COMMAND_ID_LIMIT, limit);
+      command.put(PetStoreVerticle.PET_STORE_COMMAND_LIMIT_TO_FIND, limit);
+    }
+  
+    if (tags != null) {
+      JsonArray tagsArray = new JsonArray(tags.stream().map(RequestParameter::getString).collect(Collectors.toList()));
+      command.put(PetStoreVerticle.PET_STORE_COMMAND_TAG_TO_FIND, tagsArray);
     }
     
-    routingContext.vertx().eventBus().<JsonArray>send(MongoClientVerticle.MONGO_FIND_VALUE_ADDRESS, mongoCommand, r -> {
+    routingContext.vertx().eventBus().<JsonArray>send(PetStoreVerticle.PET_STORE_FIND_VALUE_ADDRESS, command, r -> {
       if (r.succeeded()) {
         JsonArray foundPets = r.result().body();
         if (0 == foundPets.size())

@@ -1,6 +1,6 @@
 package com.github.phiz71.vertx.oas3.petstore.handlers;
 
-import com.github.phiz71.vertx.oas3.petstore.MongoClientVerticle;
+import com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle;
 import com.github.phiz71.vertx.oas3.petstore.model.Error;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -10,9 +10,9 @@ public class FindPetByIdHandlerImpl implements FindPetByIdHandler {
   
   @Override
   public void findPetById(RoutingContext routingContext, Long id) {
-    JsonObject mongoCommand = new JsonObject().put("key", "pets").put("value", new JsonObject().put("id", id));
+    JsonObject command = new JsonObject().put(PetStoreVerticle.PET_STORE_COMMAND_ID_TO_FIND, id);
     
-    routingContext.vertx().eventBus().<JsonArray>send(MongoClientVerticle.MONGO_FIND_VALUE_ADDRESS, mongoCommand, r -> {
+    routingContext.vertx().eventBus().<JsonArray>send(PetStoreVerticle.PET_STORE_FIND_BY_ID_VALUE_ADDRESS, command, r -> {
       if (r.succeeded()) {
         JsonArray foundPets = r.result().body();
         if (0 == foundPets.size())

@@ -1,4 +1,4 @@
-package com.github.phiz71.vertx.oas3.petstore.util;
+package com.github.phiz71.vertx.oas3.petstore;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;

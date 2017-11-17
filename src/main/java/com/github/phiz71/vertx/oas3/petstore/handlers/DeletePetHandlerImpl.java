@@ -1,6 +1,6 @@
 package com.github.phiz71.vertx.oas3.petstore.handlers;
 
-import com.github.phiz71.vertx.oas3.petstore.MongoClientVerticle;
+import com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle;
 import com.github.phiz71.vertx.oas3.petstore.model.Error;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -9,9 +9,9 @@ public class DeletePetHandlerImpl implements DeletePetHandler {
   
   @Override
   public void deletePet(RoutingContext routingContext, Long id) {
-    JsonObject mongoCommand = new JsonObject().put("key", "pets").put("value", new JsonObject().put("id", id));
+    JsonObject command = new JsonObject().put(PetStoreVerticle.PET_STORE_COMMAND_REMOVE, id);
     
-    routingContext.vertx().eventBus().send(MongoClientVerticle.MONGO_REMOVE_VALUE_ADDRESS, mongoCommand, r -> {
+    routingContext.vertx().eventBus().send(PetStoreVerticle.PET_STORE_REMOVE_VALUE_ADDRESS, command, r -> {
       if (r.succeeded()) {
         routingContext.response().setStatusCode(204).end();
       } else {

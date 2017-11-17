@@ -1,8 +1,7 @@
 package com.github.phiz71.vertx.oas3.petstore;
 
 import com.github.phiz71.vertx.oas3.petstore.model.NewPet;
-import com.github.phiz71.vertx.oas3.petstore.util.BaseTest;
-import com.github.phiz71.vertx.oas3.petstore.util.TestMongoClientVerticle;
+import com.github.phiz71.vertx.oas3.petstore.model.Pet;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
@@ -13,8 +12,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 /**
  * addPet Test
@@ -52,10 +49,9 @@ public class AddPetTest extends BaseTest {
     apiClient.addPetWithJson(body, (AsyncResult<HttpResponse> ar) -> {
       if (ar.succeeded()) {
         test.assertEquals(200, ar.result().statusCode());
-        List<JsonObject> result = TestMongoClientVerticle.db.get(fakeMongoDbName);
-        test.assertEquals(5, result.size());
-        JsonObject bodyPet = result.get(0);
-        test.assertEquals("Rex", bodyPet.getString("name"));
+        test.assertEquals(5, PetStoreVerticle.petStoreList.size());
+        Pet bodyPet = PetStoreVerticle.petStoreList.get(PetStoreVerticle.petStoreList.size()-1);
+        test.assertEquals("Rex", bodyPet.getName());
         Object id = bodyPet.getValue("id");
         test.assertNotNull(id);
         test.assertTrue(id instanceof Long);
