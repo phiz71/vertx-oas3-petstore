@@ -1,0 +1,28 @@
+{
+  "openapi.url": "src/main/resources/petstore.yaml",
+  //handlers for operationID
+  "handlers": [
+    {
+      "operationId": "findPets",
+      "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.FindPetsHandlerImpl"
+    },
+    {
+      "operationId": "addPet",
+      "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.AddPetHandlerImpl"
+    },
+    {
+      "operationId": "findPetById",
+      "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.FindPetByIdHandlerImpl"
+    },
+    {
+      "operationId": "deletePet",
+      "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.DeletePetHandlerImpl"
+    }
+  ],
+  //others verticles to deploy
+  "verticles": [
+    {
+      "verticleFullName": "com.github.phiz71.vertx.oas3.petstore.util.TestMongoClientVerticle"
+    }
+  ]
+}
