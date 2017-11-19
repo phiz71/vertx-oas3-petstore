@@ -1,6 +1,5 @@
 {
   "openapi.url": "src/main/resources/petstore.yaml",
-  //handlers for operationID
   "handlers": [
     {
       "operationId": "findPets",
@@ -19,7 +18,6 @@
       "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.DeletePetHandlerImpl"
     }
   ],
-  //others verticles to deploy
   "verticles": [
     {
       "verticleFullName": "com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle"
