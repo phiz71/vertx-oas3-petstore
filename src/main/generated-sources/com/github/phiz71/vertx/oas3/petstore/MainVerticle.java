@@ -1,6 +1,5 @@
 package com.github.phiz71.vertx.oas3.petstore;
 
-import com.github.phiz71.vertx.oas3.petstore.securityhandlers.ApikeySecurityHandler;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
@@ -43,7 +42,7 @@ public class MainVerticle extends AbstractVerticle {
             configHandlers(future, config, routerFactory);
             
             // Add security handlers
-            configSecurityHandlers(routerFactory);
+            configSecurityHandlers(future, config, routerFactory);
             
             //deploy util Verticles
             deployUtilVerticles(future, config);
@@ -74,8 +73,17 @@ public class MainVerticle extends AbstractVerticle {
     });
   }
   
-  private void configSecurityHandlers(OpenAPI3RouterFactory routerFactory) {
-    routerFactory.addSecurityHandler("apikey", new ApikeySecurityHandler());
+  @SuppressWarnings("unchecked")
+  private void configSecurityHandlers(Future future, JsonObject config, OpenAPI3RouterFactory routerFactory) {
+    config.getJsonArray("securityHandlers").forEach(handler -> {
+      JsonObject handJO = (JsonObject) handler;
+      try {
+        Class<Handler<RoutingContext>> securityHandlerImpl = (Class<Handler<RoutingContext>>) Class.forName(handJO.getString("securityHandlerImpl"));
+        routerFactory.addSecurityHandler(handJO.getString("securityName"), securityHandlerImpl.newInstance());
+      } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+        future.fail(e);
+      }
+    });
   }
   
   @SuppressWarnings("unchecked")
