@@ -1,3 +1,4 @@
 target
 .vertx
-vertx-oas3-petstore.iml
+.idea
+*.iml
