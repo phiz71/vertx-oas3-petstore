@@ -18,6 +18,12 @@
       "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.DeletePetHandlerImpl"
     }
   ],
+  "securityHandlers": [
+    {
+      "securityName": "apikey",
+      "securityHandlerImpl": "com.github.phiz71.vertx.oas3.petstore.securityhandlers.ApikeySecurityHandlerImpl"
+    }
+  ],
   "verticles": [
     {
       "verticleFullName": "com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle"
