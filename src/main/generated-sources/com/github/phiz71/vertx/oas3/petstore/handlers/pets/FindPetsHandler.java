@@ -1,4 +1,4 @@
-package com.github.phiz71.vertx.oas3.petstore.handlers;
+package com.github.phiz71.vertx.oas3.petstore.handlers.pets;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;

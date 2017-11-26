@@ -1,4 +1,4 @@
-package com.github.phiz71.vertx.oas3.petstore.handlers;
+package com.github.phiz71.vertx.oas3.petstore.handlers.pets;
 
 import com.github.phiz71.vertx.oas3.petstore.model.NewPet;
 import io.vertx.core.Handler;

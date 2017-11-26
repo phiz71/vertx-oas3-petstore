@@ -1,6 +1,7 @@
-package com.github.phiz71.vertx.oas3.petstore.handlers;
+package com.github.phiz71.vertx.oas3.petstore.handlers.pets;
 
 import com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle;
+import com.github.phiz71.vertx.oas3.petstore.handlers.pets.DeletePetHandler;
 import com.github.phiz71.vertx.oas3.petstore.model.Error;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
