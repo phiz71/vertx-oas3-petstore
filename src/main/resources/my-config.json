@@ -1,32 +1,15 @@
 {
   "openapi.url": "src/main/resources/petstore.yaml",
-  "handlers": [
-    {
-      "operationId": "findPets",
-      "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.FindPetsHandlerImpl"
-    },
-    {
-      "operationId": "addPet",
-      "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.AddPetHandlerImpl"
-    },
-    {
-      "operationId": "findPetById",
-      "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.FindPetByIdHandlerImpl"
-    },
-    {
-      "operationId": "deletePet",
-      "handlerImpl": "com.github.phiz71.vertx.oas3.petstore.handlers.DeletePetHandlerImpl"
-    }
-  ],
-  "securityHandlers": [
-    {
-      "securityName": "apikey",
-      "securityHandlerImpl": "com.github.phiz71.vertx.oas3.petstore.securityhandlers.ApikeySecurityHandlerImpl"
-    }
-  ],
+  "handlers": {
+    "findPets": "com.github.phiz71.vertx.oas3.petstore.handlers.pets.FindPetsHandlerImpl",
+    "addPet": "com.github.phiz71.vertx.oas3.petstore.handlers.pets.AddPetHandlerImpl",
+    "findPetById": "com.github.phiz71.vertx.oas3.petstore.handlers.pets.FindPetByIdHandlerImpl",
+    "deletePet": "com.github.phiz71.vertx.oas3.petstore.handlers.pets.DeletePetHandlerImpl"
+  },
+  "securityHandlers": {
+    "apikey": "com.github.phiz71.vertx.oas3.petstore.securityhandlers.ApikeySecurityHandlerImpl"
+  },
   "verticles": [
-    {
-      "verticleFullName": "com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle"
-    }
+    "com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle"
   ]
 }

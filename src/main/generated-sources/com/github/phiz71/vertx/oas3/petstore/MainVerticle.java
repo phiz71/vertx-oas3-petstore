@@ -62,24 +62,22 @@ public class MainVerticle extends AbstractVerticle {
   }
   
   private void deployUtilVerticles(Future future, JsonObject config) {
-    config.getJsonArray("verticles").forEach(verticle -> {
-      JsonObject vertJO = (JsonObject) verticle;
-      vertx.deployVerticle(vertJO.getString("verticleFullName"), result -> {
+    config.getJsonArray("verticles").forEach(verticle ->
+      vertx.deployVerticle(verticle.toString(), result -> {
         if (result.succeeded())
-          logger.info(vertJO.getString("verticleFullName") + " has been deployed");
+          logger.info(verticle.toString() + " has been deployed");
         else
           future.fail(result.cause());
-      });
-    });
+      })
+    );
   }
   
   @SuppressWarnings("unchecked")
   private void configSecurityHandlers(Future future, JsonObject config, OpenAPI3RouterFactory routerFactory) {
-    config.getJsonArray("securityHandlers").forEach(handler -> {
-      JsonObject handJO = (JsonObject) handler;
+    config.getJsonObject("securityHandlers").forEach(securityHandler -> {
       try {
-        Class<Handler<RoutingContext>> securityHandlerImpl = (Class<Handler<RoutingContext>>) Class.forName(handJO.getString("securityHandlerImpl"));
-        routerFactory.addSecurityHandler(handJO.getString("securityName"), securityHandlerImpl.newInstance());
+        Class<Handler<RoutingContext>> securityHandlerImpl = (Class<Handler<RoutingContext>>) Class.forName(securityHandler.getValue().toString());
+        routerFactory.addSecurityHandler(securityHandler.getKey(), securityHandlerImpl.newInstance());
       } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
         future.fail(e);
       }
@@ -88,11 +86,10 @@ public class MainVerticle extends AbstractVerticle {
   
   @SuppressWarnings("unchecked")
   private void configHandlers(Future future, JsonObject config, OpenAPI3RouterFactory routerFactory) {
-    config.getJsonArray("handlers").forEach(handler -> {
-      JsonObject handJO = (JsonObject) handler;
+    config.getJsonObject("handlers").forEach(handler -> {
       try {
-        Class<Handler<RoutingContext>> handlerImpl = (Class<Handler<RoutingContext>>) Class.forName(handJO.getString("handlerImpl"));
-        routerFactory.addHandlerByOperationId(handJO.getString("operationId"), handlerImpl.newInstance());
+        Class<Handler<RoutingContext>> handlerImpl = (Class<Handler<RoutingContext>>) Class.forName(handler.getValue().toString());
+        routerFactory.addHandlerByOperationId(handler.getKey(), handlerImpl.newInstance());
       } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
         future.fail(e);
       }
