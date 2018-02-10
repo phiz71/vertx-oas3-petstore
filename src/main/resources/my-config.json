@@ -1,0 +1,15 @@
+{
+  "openapi.url": "src/main/resources/petstore.yaml",
+  "handlers": {
+    "findPets": "com.github.phiz71.vertx.oas3.petstore.handlers.pets.FindPetsHandlerImpl",
+    "addPet": "com.github.phiz71.vertx.oas3.petstore.handlers.pets.AddPetHandlerImpl",
+    "findPetById": "com.github.phiz71.vertx.oas3.petstore.handlers.pets.FindPetByIdHandlerImpl",
+    "deletePet": "com.github.phiz71.vertx.oas3.petstore.handlers.pets.DeletePetHandlerImpl"
+  },
+  "securityHandlers": {
+    "apikey": "com.github.phiz71.vertx.oas3.petstore.securityhandlers.ApikeySecurityHandlerImpl"
+  },
+  "verticles": [
+    "com.github.phiz71.vertx.oas3.petstore.PetStoreVerticle"
+  ]
+}
